@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.IBooksMapper">
+
+	<resultMap type="com.pojo.Books" id="bookMap">
+		<id property="bookid" column="bookid"/>
+		<result property="bookname" column="bookname"/>
+		<result property="bookauthor" column="bookauthor"/>
+		<result property="bookpress" column="bookpress"/>
+		<result property="bookprice" column="bookprice"/>
+		<result property="classifiy" column="classifiy"/>
+		<result property="stock" column="stock"/>
+		<result property="synopsis" column="synopsis"/>
+		
+		<result property="catalogue" column="catalogue"/>
+	</resultMap>
+  
+	<insert id="save" parameterType="book">
+		insert into books(bookname,bookauthor,bookpress,bookprice,classifiy,stock,synopsis) 
+		values(#{bookname},#{bookauthor},#{bookpress},#{bookprice},#{classifiy},#{stock},#{synopsis})
+	</insert>
+	
+	<update id="update" parameterType="book">
+		update books set 
+		bookname=#{bookname},bookauthor=#{bookauthor},bookpress=#{bookpress},bookprice=#{bookprice},classifiy=#{classifiy},stock=#{stock},synopsis=#{synopsis} 
+		where bookid=#{bookid}
+	</update>
+	
+	<delete id="delById" parameterType="java.lang.Integer">
+		delete from books where bookid=#{bookid}
+	</delete>
+	
+	<select id="findById" parameterType="java.lang.Integer" resultMap="bookMap">
+		select * from vwbooks where bookid=#{bookid}
+	</select>
+	
+	<select id="findAll" resultMap="bookMap">
+		select * from vwbooks
+	</select>
+	
+	<select id="findByName"  parameterType="java.lang.String"    resultMap="bookMap" >
+		 select * from vwbooks book where book.bookname like '%${_parameter}%' escape '/'
+	</select>
+
+	<select id="findByNameif" parameterType="java.lang.String" 	resultMap="bookMap">
+		select * from vwbooks book
+		<if test="_parameter!=null and _parameter!=">
+			where book.bookname like '%${value}%'
+		</if>
+	</select>
+
+	<select id="findIfAndWhere" parameterType="com.pojo.Books" resultMap="bookMap">
+		select * from vwbooks book
+		<where>
+			<if test="bookname!=null and bookname!=''">
+				and book.bookname like '%${bookname}%'
+			</if>
+			<if test="bookpress!=null and bookpress!=''">
+				and book.bookpress like '%${bookpress}%'
+			</if>
+			<if test="classifiy!=null and classifiy!=''">
+				and book.classifiy like '%${classifiy}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="findIfAndWhereTrim" parameterType="com.pojo.Books" resultType="com.pojo.Books">
+		select * from vwbooks
+		<trim prefix="where" prefixOverrides="and">
+			<if test="bookname!=null and bookname!=''">
+				bookname like '%${bookname}%'
+			</if>
+			<if test="bookpress!=null and bookpress!=''">
+				bookpress like '%${bookpress}%'
+			</if>
+			<if test="classifiy!=null and classifiy!=''">
+				 classifiy like '%${classifiy}%'
+			</if>
+		</trim>
+	</select>
+</mapper>
