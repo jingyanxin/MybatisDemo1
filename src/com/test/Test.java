@@ -138,8 +138,8 @@ public class Test {
 		//findById();
 		//delById();
 		//update();
-		//findAll();
-		findByName();
+		findAll();
+		//findByName();
 		//	findByNameif();
 		//findIfAndWhere();
 		//findIfAndWhereTrim();

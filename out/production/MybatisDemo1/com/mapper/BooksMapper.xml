@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="findByName"  parameterType="java.lang.String"    resultMap="bookMap" >
-		 select * from vwbooks book where book.bookname like '%${value}%' escape '/'
+		 select * from vwbooks book where book.bookname like '%${_parameter}%' escape '/'
 	</select>
 
 	<select id="findByNameif" parameterType="java.lang.String" 	resultMap="bookMap">
